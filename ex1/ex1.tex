@@ -8,10 +8,12 @@
 \usepackage{lmodern}
 \usepackage{float}
 \usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \usepackage{latexsym}
 \usepackage{hyperref}
 \usepackage[euler]{textgreek}
 \usepackage{stackengine}
+\usepackage{pdfpages}
 \usepackage{fixltx2e}
 \hypersetup{pdfborder={0 0 0}}
 \usepackage{pgfplots}
@@ -92,9 +94,86 @@ Linearizing about $z_d$, $\dot z_d = 0$, $\ddot z_d = 0$.
 
 Equation \ref{eq:motion} we now call $f_1$. We define $z = z_d + \Delta z, i = i_d + \Delta i$ and thereby $\dot z = \Delta\dot z$. A Linearization of Equation \ref{eq:motion} around the point $z_d$ is then
 
-\begin{align}
-	\Delta\ddot z = \left. \frac{\partial f_1}{\partial \dot z} \right|_{z = z_d}
-\end{align}
+
+	$\Delta\ddot z = \left. \frac{\partial f_1}{\partial \dot z} \right.\Bigg|_{\shortstack{\tiny $z = z_d$ \\ \tiny $\dot z = \dot z_d$ \\ \tiny $i = i_d$}} \Delta \dot z + \left. \frac{\partial f_1}{\partial z} \right.\Bigg|_{\shortstack{\tiny $z = z_d$ \\ \tiny $\dot z = \dot z_d$ \\ \tiny $i = i_d$}} \Delta z + \left. \frac{\partial f_1}{\partial i} \right.\Bigg|_{\shortstack{\tiny $z = z_d$ \\ \tiny $\dot z = \dot z_d$ \\ \tiny $i = i_d$}} \Delta i\\$
+
+\begin{equation*}
+	\Delta\ddot z = \frac{1}{m}i_d^2N^2A\mu_0(z_d+z_0)^{-3} \Delta z - \frac{1}{2m}i_dN^2A\mu_0(z_d+z_0)^{-2}\Delta i
+\end{equation*}
+
+
+\begin{equation*}
+	\underline{\underline{\Delta \ddot z = \frac{2g}{z_d + z_0} \Delta z - \frac{N}{z_d + z_0}\sqrt{\frac{2gA\mu_0}{m}} \Delta i}}
+\end{equation*}
+
+
+\newpage
+\section{Problem 2}
+
+\subsection{b}
+
+Natural signal-flow inputs are $T_i$ and $\omega_{i-1}$. The outputs should be $T_{i-1}$ and $\omega_i$. For natural energy-flow, inputs should be $T_{i-1}$ and $\omega{i-1}$, with $T_i$ and $\omega_i$ as outputs. 
+
+\subsection{c}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = \textwidth]{ex1_2_elasticload}
+    \caption{The elastic load implemented in Simulink}
+    \label{fig:elasticload} 
+\end{figure}
+
+\subsection{d}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = \textwidth]{ex1_2}
+    \caption{Two elastc loads in series with the motor.}
+    \label{fig:twoloads} 
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = \textwidth]{ex1_2b}
+    \caption{Plot of the rotational velocity of the motor and the two loads.}
+    \label{fig:veloplot} 
+\end{figure}
+
+As seen in Figure \ref{fig:veloplot}, the angular velocity of the second load is greatly amplified. It is also delayed by a couple of seconds, which is natural to except of this system. Otherwise the rotational velocity of the last load behaves quite similary to that of the motor and the fist load.
+
+\subsection{e}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = \textwidth]{ex1_2_bode}
+    \caption{Bode plot of the transfer function from the step input to the rotational velocity of the second load.}
+    \label{fig:bodeSimu} 
+\end{figure}
+
+\newpage
+
+\section{Problem 3}
+
+\subsection{a}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{ex1_3a}
+    \caption{The rotational velocity of the second load when simulated using Dymola.}
+    \label{fig:dymola1} 
+\end{figure}
+
+\subsection{b}
+
+\subsection{c}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{ex1_3c_bode}
+    \caption{Bode plot of the system when linearized with Dymola.}
+    \label{fig:bodeDymola} 
+\end{figure}
+
 
 
 \end{document}
