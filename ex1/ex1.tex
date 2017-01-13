@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[norsk]{babel}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{latexsym}
+\usepackage{hyperref}
+\usepackage[euler]{textgreek}
+\usepackage{stackengine}
+\usepackage{fixltx2e}
+\hypersetup{pdfborder={0 0 0}}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\pgfplotsset{plot coordinates/math parser=false}
+\newlength\figureheight
+\newlength\figurewidth
+\usepackage[section]{placeins}%Sørger for at plots og andre floats holder seg til sin section.
+\setlength\parindent{0pt}%Setter indent til 0
+
+
+
+\title{Exercise 1 - TTK4130 Modeling and Simulation}
+\author{Camilla Sterud}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\section{Problem 1}
+
+\begin{align}
+	Ni = \phi(\mathcal R_a + \mathcal R_c + \mathcal R_b + \mathcal R_r).\label{eq:Ni}\\ 
+	\mathcal R_a = \frac{z}{A\mu_0}, \mathcal R_r = const. \label{eq:R_a} \\ 
+	\mathcal R_c, \mathcal R_b << \mathcal R_r, \mathcal R_a. \label{eq:small}
+\end{align}
+
+
+\subsection{a}
+
+\begin{equation}\label{eq:R_r}
+	\mathcal R_r = \frac{z_0}{A\mu_0}, z_0 = const.
+\end{equation}
+
+Using Equation \ref{eq:Ni} together with the relations from equations \ref{eq:R_a} and \ref{eq:R_r} we get
+
+\begin{equation*}
+	Ni = \phi(\frac{z}{A\mu_0} + \mathcal R_c + \mathcal R_b + \frac{z_0}{A\mu_0}).
+\end{equation*}
+
+Since $\mathcal R_c$ and $\mathcal R_b$ are neligible (Equation \ref{eq:small}), the total magnetomotive force on the ball is
+
+\begin{equation*}
+	\underline{\underline{Ni = \frac{\phi}{A\mu_0}(z + z_0).}}
+\end{equation*}
+
+\subsection{b}
+
+\begin{equation} \label{eq:induct}
+	L(z) = \frac{N\phi}{i} = \frac{N^2A\mu_0}{z + z_0}.
+\end{equation}
+
+\begin{equation}\label{eq:magnF}
+	F = \frac{i^2}{2}\frac{\partial L(z)}{\partial z}.
+\end{equation}
+
+Assume positive direction downwards and gravitational acceleration $g$.
+
+\begin{align*}
+	ma = \Sigma F\\
+	m\ddot z = mg + F\\
+	m\ddot z = mg + \frac{i^2}{2}N^2A\mu_0(z + z_0)^{-2}.
+\end{align*}
+
+\begin{equation}\label{eq:motion}
+	\underline{\underline{\ddot z = g - \frac{1}{2m}i^2N^2A\mu_0(z+z_0)^{-2}}}
+\end{equation}
+
+
+\subsection{c}
+Linearizing about $z_d$, $\dot z_d = 0$, $\ddot z_d = 0$.
+\begin{align*}
+	0 = g - \frac{1}{2m}i_d^2N^2A\mu_0(z_d+z_0)^{-2}\\
+	i_d = \frac{1}{N}\sqrt{\frac{2mg}{A\mu_0}}(z_d + z_0)
+\end{align*}
+
+Equation \ref{eq:motion} we now call $f_1$. We define $z = z_d + \Delta z, i = i_d + \Delta i$ and thereby $\dot z = \Delta\dot z$. A Linearization of Equation \ref{eq:motion} around the point $z_d$ is then
+
+\begin{align}
+	\Delta\ddot z = \left. \frac{\partial f_1}{\partial \dot z} \right|_{z = z_d}
+\end{align}
+
+
+\end{document}
