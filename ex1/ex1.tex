@@ -13,6 +13,7 @@
 \usepackage{hyperref}
 \usepackage[euler]{textgreek}
 \usepackage{stackengine}
+\usepackage[version-1-compatibility]{siunitx}
 \usepackage{pdfpages}
 \usepackage{fixltx2e}
 \hypersetup{pdfborder={0 0 0}}
@@ -28,6 +29,7 @@
 
 \title{Exercise 1 - TTK4130 Modeling and Simulation}
 \author{Camilla Sterud}
+\date{}
 
 \begin{document}
 
@@ -139,22 +141,28 @@ Natural signal-flow inputs are $T_i$ and $\omega_{i-1}$. The outputs should be $
     \label{fig:veloplot} 
 \end{figure}
 
-As seen in Figure \ref{fig:veloplot}, the angular velocity of the second load is greatly amplified. It is also delayed by a couple of seconds, which is natural to except of this system. Otherwise the rotational velocity of the last load behaves quite similary to that of the motor and the fist load.
+As seen in Figure \ref{fig:veloplot}, the angular velocity of the second load is delayed. This is due to the phase displacement between the motor and the first load, and the first and the second load. 
 
 \subsection{e}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width = \textwidth]{ex1_2_bode}
-    \caption{Bode plot of the transfer function from the step input to the rotational velocity of the second load.}
+    \caption{Bode plot of the transfer function from the step input to the rotational velocity of the second load.  Made in with Simulink's linear analysis.}
     \label{fig:bodeSimu} 
 \end{figure}
+
+In the bode plot in Figure \ref{fig:bodeSimu} it is clear that the system has two resonance peaks at $\omega = \SI[per-mode=fraction]{1.5}{\rad\per\second}$ and $\omega = \SI[per-mode=fraction]{0.7}{\rad\per\second}$. For small frequencies the effects of integrators are present, which causes the phase to fall almost down to $-450$. For large frequencies, the amplification of the input signal is small, and the phase stabilizes at about $\SI{-270}{\degree}$
 
 \newpage
 
 \section{Problem 3}
 
 \subsection{a}
+
+The rotational speed of the second load when simulated using Modelica can be seen in Figure \ref{fig:dymola1}. It looks just the same as when using Simulink (Figure \ref{fig:veloplot}).
+
+The graphical view in Dymola gives a lot more visual information than the one in Simulink. By just looking at the model it is possible to understand what is to be simulated, while in Simulink you have to know and understand the mathematical model to get what is going on. 
 
 \begin{figure}[h]
     \centering
@@ -164,8 +172,12 @@ As seen in Figure \ref{fig:veloplot}, the angular velocity of the second load is
 \end{figure}
 
 \subsection{b}
+The Flange\_a object in Dymola is a component that connects rotating mechanical systems. This can be compared to the input/ouput ports of Simulink subsystems. They both comminicate with the outer system, but while the Simulink ports are purely objects to hold numbers, the Flange\_a also holds physical attributes (rotation angle and torque). The Flange\_a is a part of the simulation and emulates a physical connection, while Simulink ports merely are there to communicate with outer subsystems. 
+
 
 \subsection{c}
+
+The bode plot created using Dymolas linear analysis tools can be seen in Figure \ref{fig:bodeDymola}. It looks very much the same as the one created with SImulink (Figure \ref{fig:bodeSimu}).
 
 \begin{figure}[h]
     \centering
