@@ -10,6 +10,7 @@
 \usepackage{graphicx}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \usepackage{latexsym}
+\usepackage{gensymb}
 \usepackage{hyperref}
 \usepackage[euler]{textgreek}
 \usepackage{stackengine}
@@ -27,7 +28,7 @@
 
 
 
-\title{Exercise 1 - TTK4130 Modeling and Simulation}
+\title{Exercise 2 - TTK4130 Modeling and Simulation}
 \author{Camilla Sterud}
 \date{}
 
@@ -37,154 +38,111 @@
 
 \newpage
 
-\section{Problem 1}
+\section*{Problem 2}
 
-\begin{align}
-	Ni = \phi(\mathcal R_a + \mathcal R_c + \mathcal R_b + \mathcal R_r).\label{eq:Ni}\\ 
-	\mathcal R_a = \frac{z}{A\mu_0}, \mathcal R_r = const. \label{eq:R_a} \\ 
-	\mathcal R_c, \mathcal R_b << \mathcal R_r, \mathcal R_a. \label{eq:small}
-\end{align}
+There are three criteria that ust be fullfilled by the rational, proper transfer funtion $H(s)$ for it to  a positive real:
+
+\begin{enumerate}
+\item All the poles of $H(s)$ have $Re(\lambda_i) \leq 0$.
+\item \label{crit:two} $Re[H(j\omega)] \geq 0$ $\forall$  $\omega$ s.t. $j\omega$ is not a pole of $H(s)$.
+\item If $j\omega_0$ is a pole of $H(s)$, it is simple and $Res_{s = j\omega_0}[H(s)] > 0$.
+\end{enumerate}
 
 
-\subsection{a}
-
-\begin{equation}\label{eq:R_r}
-	\mathcal R_r = \frac{z_0}{A\mu_0}, z_0 = const.
-\end{equation}
-
-Using Equation \ref{eq:Ni} together with the relations from equations \ref{eq:R_a} and \ref{eq:R_r} we get
+\subsection*{a}
 
 \begin{equation*}
-	Ni = \phi(\frac{z}{A\mu_0} + \mathcal R_c + \mathcal R_b + \frac{z_0}{A\mu_0}).
+	H_1(s) = \frac{1}{1 + Ts}.
 \end{equation*}
 
-Since $\mathcal R_c$ and $\mathcal R_b$ are neligible (Equation \ref{eq:small}), the total magnetomotive force on the ball is
+$H_1(s)$ has a pole at $-\frac{1}{T}$, which has a neagtive real part for $T > 0$.
 
 \begin{equation*}
-	\underline{\underline{Ni = \frac{\phi}{A\mu_0}(z + z_0).}}
+    Re[H_1(j\omega)] = Re[\frac{1}{1 + Tj\omega}] = \frac{1}{1 + \omega^2T^2} \geq 0 \quad \forall \: \omega.
 \end{equation*}
 
-\subsection{b}
-
-\begin{equation} \label{eq:induct}
-	L(z) = \frac{N\phi}{i} = \frac{N^2A\mu_0}{z + z_0}.
-\end{equation}
-
-\begin{equation}\label{eq:magnF}
-	F = \frac{i^2}{2}\frac{\partial L(z)}{\partial z}.
-\end{equation}
-
-Assume positive direction downwards and gravitational acceleration $g$.
-
-\begin{align*}
-	ma = \Sigma F\\
-	m\ddot z = mg + F\\
-	m\ddot z = mg + \frac{i^2}{2}N^2A\mu_0(z + z_0)^{-2}.
-\end{align*}
-
-\begin{equation}\label{eq:motion}
-	\underline{\underline{\ddot z = g - \frac{1}{2m}i^2N^2A\mu_0(z+z_0)^{-2}}}
-\end{equation}
-
-
-\subsection{c}
-Linearizing about $z_d$, $\dot z_d = 0$, $\ddot z_d = 0$.
-\begin{align*}
-	0 = g - \frac{1}{2m}i_d^2N^2A\mu_0(z_d+z_0)^{-2}\\
-	i_d = \frac{1}{N}\sqrt{\frac{2mg}{A\mu_0}}(z_d + z_0)
-\end{align*}
-
-Equation \ref{eq:motion} we now call $f_1$. We define $z = z_d + \Delta z, i = i_d + \Delta i$ and thereby $\dot z = \Delta\dot z$. A Linearization of Equation \ref{eq:motion} around the point $z_d$ is then
-
-
-	$\Delta\ddot z = \left. \frac{\partial f_1}{\partial \dot z} \right.\Bigg|_{\shortstack{\tiny $z = z_d$ \\ \tiny $\dot z = \dot z_d$ \\ \tiny $i = i_d$}} \Delta \dot z + \left. \frac{\partial f_1}{\partial z} \right.\Bigg|_{\shortstack{\tiny $z = z_d$ \\ \tiny $\dot z = \dot z_d$ \\ \tiny $i = i_d$}} \Delta z + \left. \frac{\partial f_1}{\partial i} \right.\Bigg|_{\shortstack{\tiny $z = z_d$ \\ \tiny $\dot z = \dot z_d$ \\ \tiny $i = i_d$}} \Delta i\\$
+$\underline{\underline{H_1(s) \, \textrm{is positive real}}}$
 
 \begin{equation*}
-	\Delta\ddot z = \frac{1}{m}i_d^2N^2A\mu_0(z_d+z_0)^{-3} \Delta z - \frac{1}{2m}i_dN^2A\mu_0(z_d+z_0)^{-2}\Delta i
+    H_2(s) = \frac{s}{s^2 + \omega_0^2}.
+\end{equation*}
+
+$H_2(s)$ has a pair of complex conjugated poles at $\pm j\omega_0$, which has a real part of zero. If we picture the phase plot of $H_2(j\omega)$, it will start out in $90\degree$ because of the zero in $\omega = 0$. The complex conjugate pole pair will cause the phase to fall by $180\degree$, making the phase end up at $-90\degree$. This means that $H_2(s)$ will always stay in the right half plane of the complex plane and we can conclude that $Re[H(j\omega)] \geq 0$.
+
+\begin{equation*}
+    Res_{s = j\omega_0}[H_2(s)] = \lim_{s\to j\omega_0}(s - j\omega_0)H_2(s) = \lim_{s\to j\omega_0}\frac{s}{s + j\omega_0} = \frac{1}{2} > 0.
+\end{equation*}
+
+$\underline{\underline{H_2(s) \, \textrm{is positive real}}}$
+
+
+\subsection*{b}
+
+\begin{equation*}
+    H_3(s) = \frac{s+a}{(s + b)(s + c)}, \quad b, c > 0.
+\end{equation*}
+
+$H_3$ has two ploes in $-b$ and $-c$, both with negative real parts. 
+
+We have several cases in need of consideration to decide for which a $H_3(s)$ is positive real. The poles in $-b$ and $-c$ will contribute to the phase with $-180 \degree$. If $a < 0$, $H_3(s)$ will start out in the left half plane, so that can be excluded. If $a > b,c$ the phase will fall below $-90 \degree$ before $a$ can pull it up again by $90\degree$. The only cases where $H_3(s)$ stays in the right half plane is if $a = 0$, thus stating out the phase plot in $90\degree$, or if $a < b + c$. 
+
+This can also be seen by calculating the real part of $H_3(s)$:
+
+\begin{equation*}
+    Re[H_3(j\omega)] = \frac{abc + \omega^2(b+c-a)}{(\omega^2 + b^2)(\omega^2 + c^2)}.
 \end{equation*}
 
 
+It is easy to see that this will only always be positive if the numerator stays positive for all $\omega$, as the denominator will always be positive. Thsi only happens in the same cases as mentioned above, so
+
+$\underline{\underline{H_3(s) \, \textrm{is positive real for } 0 \leq a < b + c}}$
+
+\subsection*{c}
+
 \begin{equation*}
-	\underline{\underline{\Delta \ddot z = \frac{2g}{z_d + z_0} \Delta z - \frac{N}{z_d + z_0}\sqrt{\frac{2gA\mu_0}{m}} \Delta i}}
+    H_4(s) = \frac{s^2 + a^2}{s(s^2 + \omega_0^2)}, \quad a \geq 0.
+\end{equation*}
+
+The poles of $H_4(s)$ are at $0$ and $\pm j\omega_0$, which are all at the imaginary axis with zero real part. 
+
+\begin{equation*}
+    Re[H_4(j\omega)] = Re[\frac{a^2 - \omega^2}{j\omega(\omega_0^2 - \omega^2)}] = 0,
+\end{equation*}
+
+so criterion \ref{crit:two} is fullfilled. 
+
+\begin{equation*}
+    Res_{s = 0}[H_4(s)] = \lim_{s \to 0} s \frac{s^2 + a^2}{s(s^2 + \omega_0^2)} = \frac{a^2}{\omega_0^2} > 0 \quad \forall \: a \neq 0.
+\end{equation*}
+
+\begin{equation*}
+    Res_{s = j\omega_0}[H_4(s)] = \lim_{s \to j\omega_0} (s-j\omega_0) \frac{s^2 + a^2}{s(s^2 + \omega_0^2)} = \frac{\omega_0^2 - a^2}{2\omega_0^2} > 0, \quad a \in (-\omega_0,\omega_0)
+\end{equation*}
+
+$\underline{\underline{H_4(s) \, \textrm{is positive real for } 0 < |a| < |\omega_0|}}$
+
+\subsection*{d}
+
+\begin{equation*}
+    T\dot y = -y + u \Rightarrow f(y,u) = \frac{1}{T}(-y + u)
+\end{equation*}
+
+\begin{equation*}
+    \dot V = \frac{\partial V}{\partial y}f(y,u) = u^Ty - g(y) \quad \forall \: u, \quad g(y) > 0.
+\end{equation*}
+
+\begin{equation*}
+    V = \frac{1}{2}Ty^2
+\end{equation*}
+
+\begin{equation*}
+    \dot V = Ty\dot y = y(-y + u)
 \end{equation*}
 
 
-\newpage
-\section{Problem 2}
-
-\subsection{b}
-
-Natural signal-flow inputs are $T_i$ and $\omega_{i-1}$. The outputs should be $T_{i-1}$ and $\omega_i$. For natural energy-flow, inputs should be $T_{i-1}$ and $\omega{i-1}$, with $T_i$ and $\omega_i$ as outputs. 
-
-\subsection{c}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width = \textwidth]{ex1_2_elasticload}
-    \caption{The elastic load implemented in Simulink}
-    \label{fig:elasticload} 
-\end{figure}
-
-\subsection{d}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width = \textwidth]{ex1_2}
-    \caption{Two elastc loads in series with the motor.}
-    \label{fig:twoloads} 
-\end{figure}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width = \textwidth]{ex1_2b}
-    \caption{Plot of the rotational velocity of the motor and the two loads.}
-    \label{fig:veloplot} 
-\end{figure}
-
-As seen in Figure \ref{fig:veloplot}, the angular velocity of the second load is delayed. This is due to the phase displacement between the motor and the first load, and the first and the second load. 
-
-\subsection{e}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width = \textwidth]{ex1_2_bode}
-    \caption{Bode plot of the transfer function from the step input to the rotational velocity of the second load.  Made in with Simulink's linear analysis.}
-    \label{fig:bodeSimu} 
-\end{figure}
-
-In the bode plot in Figure \ref{fig:bodeSimu} it is clear that the system has two resonance peaks at $\omega = \SI[per-mode=fraction]{1.5}{\rad\per\second}$ and $\omega = \SI[per-mode=fraction]{0.7}{\rad\per\second}$. For small frequencies the effects of integrators are present, which causes the phase to fall almost down to $-450$. For large frequencies, the amplification of the input signal is small, and the phase stabilizes at about $\SI{-270}{\degree}$
-
-\newpage
-
-\section{Problem 3}
-
-\subsection{a}
-
-The rotational speed of the second load when simulated using Modelica can be seen in Figure \ref{fig:dymola1}. It looks just the same as when using Simulink (Figure \ref{fig:veloplot}).
-
-The graphical view in Dymola gives a lot more visual information than the one in Simulink. By just looking at the model it is possible to understand what is to be simulated, while in Simulink you have to know and understand the mathematical model to get what is going on. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = \textwidth]{ex1_3a}
-    \caption{The rotational velocity of the second load when simulated using Dymola.}
-    \label{fig:dymola1} 
-\end{figure}
-
-\subsection{b}
-The Flange\_a object in Dymola is a component that connects rotating mechanical systems. This can be compared to the input/ouput ports of Simulink subsystems. They both comminicate with the outer system, but while the Simulink ports are purely objects to hold numbers, the Flange\_a also holds physical attributes (rotation angle and torque). The Flange\_a is a part of the simulation and emulates a physical connection, while Simulink ports merely are there to communicate with outer subsystems. 
-
-
-\subsection{c}
-
-The bode plot created using Dymolas linear analysis tools can be seen in Figure \ref{fig:bodeDymola}. It looks very much the same as the one created with SImulink (Figure \ref{fig:bodeSimu}).
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = \textwidth]{ex1_3c_bode}
-    \caption{Bode plot of the system when linearized with Dymola.}
-    \label{fig:bodeDymola} 
-\end{figure}
+\begin{equation*}
+    \dot V = uy - y^2 \Rightarrow g(y) = y^2 > 0 \Rightarrow Passive
+\end{equation*}
 
 
 
