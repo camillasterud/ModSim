@@ -43,9 +43,9 @@
 There are three criteria that ust be fullfilled by the rational, proper transfer funtion $H(s)$ for it to  a positive real:
 
 \begin{enumerate}
-\item All the poles of $H(s)$ have $Re(\lambda_i) \leq 0$.
+\item \label{crit:one} All the poles of $H(s)$ have $Re(\lambda_i) \leq 0$.
 \item \label{crit:two} $Re[H(j\omega)] \geq 0$ $\forall$  $\omega$ s.t. $j\omega$ is not a pole of $H(s)$.
-\item If $j\omega_0$ is a pole of $H(s)$, it is simple and $Res_{s = j\omega_0}[H(s)] > 0$.
+\item \label{crit:three} If $j\omega_0$ is a pole of $H(s)$, it is simple and $Res_{s = j\omega_0}[H(s)] > 0$.
 \end{enumerate}
 
 
@@ -127,10 +127,12 @@ $\underline{\underline{H_4(s) \, \textrm{is positive real for } 0 < |a| < |\omeg
     T\dot y = -y + u \Rightarrow f(y,u) = \frac{1}{T}(-y + u)
 \end{equation*}
 
+The storage function must fulfill 
 \begin{equation*}
     \dot V = \frac{\partial V}{\partial y}f(y,u) = u^Ty - g(y) \quad \forall \: u, \quad g(y) > 0.
 \end{equation*}
 
+Choose the storage function to be
 \begin{equation*}
     V = \frac{1}{2}Ty^2
 \end{equation*}
@@ -144,6 +146,26 @@ $\underline{\underline{H_4(s) \, \textrm{is positive real for } 0 < |a| < |\omeg
     \dot V = uy - y^2 \Rightarrow g(y) = y^2 > 0 \Rightarrow Passive
 \end{equation*}
 
+\subsection*{d}
+
+\begin{equation*}
+    H(s) = \frac{(s + z_1)...(s+z_m)}{s(s + p_1)...(s+p_n)}, \quad Re(p_i) > 0, \: Re(z_i) > 0, \: n>m.
+\end{equation*}
+
+$H(s)$ is rational and proper. Criterion \ref{crit:one} is fulfilled, all the poles of $H(s)$ have negative real part, except for the one that is zero. 
+The residual of the pole in zero is
+
+\begin{equation*}
+    Res_{s = 0} H(s) = \frac{z_1...z_m}{p_1...p_n}.
+\end{equation*}
+
+Since complex poles and zeros of a transfer function always exist in complex conjugate pairs, and all $p_i, z_i$ have positive real parts, the residual must be real and greater than zero. 
+
+This leaves only criterion \ref{crit:two}, so
+
+\begin{equation*}
+    \underline{\underline{H(s) \: \textmd{is positive real if and only if}\: Re[H(j\omega)] \geq 0}}
+\end{equation*}
 
 
 \end{document}
