@@ -169,9 +169,32 @@ $e(t) = i(t) - i_{ref}$, $\dot e = \frac{1}{L}(u - Ri)$.
 
 $\lim_{t\to \infty} \dot E (t) = 0$, since $E$ must be constant if $i$ is constant. $\lim_{t\to \infty} e(u - Ri) \Rightarrow \underline{\underline{u = Ri_{ref}}}$.
 
+\subsection{c}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = \textwidth]{ex2_2_RK4}
+    \caption{Code for solving the system with Explicit Runge-Kutta of order 4 in MATLAB.}
+    \label{fig:matlabcode} 
+\end{figure}
+
 \subsection{d}
 
-The MATLAB and Dymola plots look suspiciously alike. Ref to plots.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{ex2_2_RK4_plot}
+    \caption{The system solved with the MATLAB code.}
+    \label{fig:RK4MATLAB} 
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{ex2_2d}
+    \caption{The system solved with RK4 in Dymola.}
+    \label{fig:RK4Dymola} 
+\end{figure}
+
+The MATLAB and Dymola plots look suspiciously alike.
 
 
 \end{document}
