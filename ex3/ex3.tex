@@ -196,5 +196,60 @@ $\lim_{t\to \infty} \dot E (t) = 0$, since $E$ must be constant if $i$ is consta
 
 The MATLAB and Dymola plots look suspiciously alike.
 
+\section{Problem 3}
+
+\subsection{a}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{r1_rt_e1}
+    \caption{1 round, Relative Tolerance (RT) = 10.}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{r1_rt_e-2}
+    \caption{1 round, RT = 0.01. This works.}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{r2_rt_e-4}
+    \caption{2 rounds, RT = 0.0001.}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{r2_rt_e-5}
+    \caption{2 rounds, RT = 0.00001. This works.}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{r3_rt_e-4}
+    \caption{2 rounds, RT = 0.00001. } 
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{r3_rt_e-7}
+    \caption{2 rounds, RT = $1e-7$. This works, kinda.}
+\end{figure}
+
+\subsection{b}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{step_005}
+    \caption{1 round with ode5 solver. h = 0.005.}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{step_0025}
+    \caption{1 round with ode5 solver. h = 0.0025. It's ok.}
+\end{figure}
+
+
 
 \end{document}
