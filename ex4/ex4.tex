@@ -8,7 +8,7 @@
 \usepackage{lmodern}
 \usepackage{float}
 \usepackage{graphicx}
-\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\DeclareGraphicsExtensions{.eps,.pdf,.png,.jpg}
 \usepackage{latexsym}
 \usepackage{hyperref}
 \usepackage[euler]{textgreek}
@@ -96,6 +96,90 @@ Putting the taylor expansion of $k_2$ from Equation \ref{eq:k2exp} and Equation 
 
 \section{Problem 2}
 
+\subsection{a}
+
+\begin{figure}[!ht]\label{fig:spring2a}
+	\centering
+	\includegraphics[width = 0.5\textwidth]{ModSim_ex4_2a}
+    \caption{The pneumatic spring simulated with the explicit Euler method. The code for generating this plot is shown in Listing \ref{code2a}.}
+\end{figure}
+
+As seen in Figure \ref{fig:spring2a}, the explicit Euler method is on the verge of stability for this system. The position of the spring should be decreasing, but insted it oscillates around $\simeq 1.2$.
+
+\subsection{b}
+
+\begin{figure}[!ht]\label{fig:spring2b}
+	\centering
+	\includegraphics[width = 0.5\textwidth]{ModSim_ex4_2b}
+    \caption{The pneumatic spring simulated with the implicit Euler method. The code for generating this plot is shown in Listing \ref{code2b}.}
+\end{figure}
+
+\subsection{c}
+
+\begin{figure}[!ht]\label{fig:spring2c}
+	\centering
+	\includegraphics[width = 0.5\textwidth]{ModSim_ex4_2c}
+    \caption{The pneumatic spring simulated with the implicit midpoint rule. The code for generating this plot is shown in Listing \ref{code2c}.}
+\end{figure}
+
+\subsection{d}
+
+\begin{figure}[!ht]\label{fig:spring2d}
+	\centering
+	\includegraphics[width = 0.5\textwidth]{ModSim_ex4_2d}
+    \caption{The energy in the system for the three solvers. The code for generating this plot is shown in Listing \ref{code2d}.}
+\end{figure}
+
+\section{Problem 3}
+
+Voltage controlled DC motor:
+
+\begin{align*}
+	L_1\frac{di_a}{dt} &= - R_ai_a - K_E\omega_m + u_a\\
+	J_m\frac{d\omega_m}{dt} &= K_Ti_a - T_L\\
+	K_E &= K_T.
+\end{align*}
+
+\subsection{a}
+
+$T_L = u_a = 0$. Energy function for the system:
+
+\begin{equation*}
+	E = \frac{1}{2}L_ai_a^2 + \frac{1}{2}J_m\omega_m^2.
+\end{equation*}
+
+To prove stability, the energy in the system must be decreasing for all times. 
+
+\begin{align*}
+	\dot E &= L_ai_a\frac{di_a}{dt} + J_m\omega_m\frac{d\omega_m}{dt}\\
+	&= -R_ai_a^2 - K\omega_mi_a + i_au_a+K\omega_mi_a - \omega_mT_L
+	
+\end{align*}
+
+\begin{equation*}
+	\underline{\underline{\dot E = -R_ai_a^2 \leq 0 \:\forall\: t > 0 \: \Rightarrow \text{The system is stable}}}
+\end{equation*}
+
+\subsection{b}
+To prove passivity, the storage function, $V$, must fulfill the criteria $\dot V = \mathbf{u}^T\mathbf{y} - g(x), g(x) \geq 0$. $\mathbf{u} = \begin{bmatrix} u_a & -T_L\end{bmatrix}, \mathbf{y} = \begin{bmatrix} i_a & \omega_m\end{bmatrix}$.
+
+\begin{align*}
+	V &= E\\
+	\dot V &= -R_ai_a^2 - K\omega_mi_a + i_au_a+K\omega_mi_a - \omega_mT_L\\
+	&= -R_ai_a^2 + i_au_a - \omega_mT_L
+	
+\end{align*}
+
+\begin{equation*}
+	\underline{\underline{\dot V =\mathbf{u}^T\,\mathbf{y} - R_ai_a^2, \: g(x) = R_ai_a^2 \geq 0 \Rightarrow \text{The system is passive.}}}
+\end{equation*}
+
+\section{c}
+
+
+\section{Listings}
+
+
 \begin{lstlisting}[language=Matlab, frame = single, caption = The explicit Euler method implemented i MATLAB,, label=code2a]
 hold on; grid on;
 
@@ -105,50 +189,116 @@ g = 9.81;
 h = 0.01;
 t = 0:h:10;
 
-y = zeros (2,length(t));
-y(1,1) = 2;
-y(2,1) = 0;
+ya = zeros (2,length(t));
+ya(1,1) = 2;
+ya(2,1) = 0;
 
-f = @(Y) [Y(2);g*(Y(1)^(-kappa) - 1)];
+f = @(ya) [ya(2);g*(ya(1)^(-kappa) - 1)];
 
 for i = 1:(length(t) - 1)
     
-    k_1 = f(y(:,i));
-    k_2 = f(y(:,i) + 0.5*h.*k_1);
+    k_1 = f(ya(:,i));
+    k_2 = f(ya(:,i) + 0.5*h.*k_1);
     
-    y(:,i+1) = y(:,i) + h.*k_2;
+    ya(:,i+1) = ya(:,i) + h.*k_2;
     
 end
 
-plot(t,y(1,:));
+plot(t,ya(1,:));
 xlabel('t(s)');
 ylabel('x(m)');
+
+print -depsc modsim_ex4_2a.eps
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, frame = single, caption = The implicit Euler method implemented i MATLAB,, label=code2b]
+
+hold on; grid on;
+
+kappa = 1.4;
+g = 9.81;
+
+h = 0.01;
+t = 0:h:10;
+
+yb = zeros (2,length(t));
+yb(1,1) = 2;
+yb(2,1) = 0;
+
+f = @(yb) [yb(2);g*(yb(1)^(-kappa) - 1)];
+
+opt = optimset('Display','off','TolFun',1e-8);
+
+for i = 1:(length(t) - 1)
+    
+    r = @(ybnext) (yb(:,i) + h*feval(f, ybnext) - ybnext);
+    yb(:,i+1) = fsolve(r, yb(:,i), opt);
+    
+end
+
+plot(t,yb(1,:));
+xlabel('t(s)');
+ylabel('x(m)');
+
+print -depsc modsim_ex4_2b.eps
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, frame = single, caption = The implicit midpoint rule implemented i MATLAB,, label=code2c]
+
+hold on; grid on;
+
+kappa = 1.4;
+g = 9.81;
+
+h = 0.01;
+t = 0:h:10;
+
+yc = zeros (2,length(t));
+yc(1,1) = 2;
+yc(2,1) = 0;
+
+f = @(yc) [yc(2);g*(yc(1)^(-kappa) - 1)];
+
+opt = optimset('Display','off','TolFun',1e-8);
+
+for i = 1:(length(t) - 1)
+    
+    r = @(ycnext) (yc(:,i) + h/2*feval(f, ycnext) - ycnext);
+    yc(:,i+1) = fsolve(r, yc(:,i), opt);
+    
+end
+
+plot(t,yc(1,:));
+xlabel('t(s)');
+ylabel('x(m)');
+
+print -depsc modsim_ex4_2c.eps
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, frame = single, caption = The implicit midpoint rule implemented i MATLAB,, label=code2d]
+
+hold on; grid on;
+
+h = 0.01;
+t = 0:h:10;
 
 p0 = 2.5*10^5;
 m = 200;
 A = 0.01;
 
-E = (1/(kappa-1))*p0*A.*y(1,:).^(1-kappa) + m*g.*y(1,:) + 0.5*m.*y(2,:).^2;
+Ea = (1/(kappa-1))*p0*A.*ya(1,:).^(1-kappa) + m*g.*ya(1,:) + 0.5*m.*ya(2,:).^2;
+Eb = (1/(kappa-1))*p0*A.*yb(1,:).^(1-kappa) + m*g.*yb(1,:) + 0.5*m.*yb(2,:).^2;
+Ec = (1/(kappa-1))*p0*A.*yc(1,:).^(1-kappa) + m*g.*yc(1,:) + 0.5*m.*yc(2,:).^2;
 
-figure;
 
-plot(t,E);
+plot(t,Ea);
+plot(t,Eb);
+plot(t,Ec);
 xlabel('t(s)');
-ylabel('energy(J)');
+ylabel('E(J)');
+legend('Explicit Euler','Implicit Euler','Implicit midpoint');
+
+print -depsc modsim_ex4_2d.eps
 \end{lstlisting}
-%\includegraphics [width=4in]{Modesim_ex4_2a_01.eps}
-    
-
-
-
-
-
-%\begin{figure}[!ht]
- %   \centering
-  %  \includegraphics[width = 0.5\textwidth]{step_0025}
-   % \caption{1 round with ode5 solver. h = 0.0025. It's ok.}
-%\end{figure}
-
-
 
 \end{document}
