@@ -101,25 +101,29 @@ Putting the taylor expansion of $k_2$ from Equation \ref{eq:k2exp} and Equation 
 \begin{figure}[!ht]\label{fig:spring2a}
 	\centering
 	\includegraphics[width = 0.5\textwidth]{ModSim_ex4_2a}
-    \caption{The pneumatic spring simulated with the explicit Euler method. The code for generating this plot is shown in Listing \ref{code2a}.}
+    \caption{The pneumatic spring simulated with the explicit Euler method. The code for generating this plot is shown in Listing \ref{code2}.}
 \end{figure}
 
-As seen in Figure \ref{fig:spring2a}, the explicit Euler method is on the verge of stability for this system. The position of the spring should be decreasing, but insted it oscillates around $\simeq 1.2$.
+As seen in Figure \ref{fig:spring2a}, the explicit Euler method is unstable for this system. The position of the spring should be decreasing, but the error between the real position and the simulated position only grows ever larger. As seen in Figure \ref{fig:spring2d}, the energy in the spring increases as time goes on, and the system is clearly unstable.
 
 \subsection{b}
+
+For the implicit Euler method, the system is stable. Both the energy and the position of the spring is decreasing (see Figures \ref{fig:spring2b} and \ref{fig:spring2d}).
 
 \begin{figure}[!ht]\label{fig:spring2b}
 	\centering
 	\includegraphics[width = 0.5\textwidth]{ModSim_ex4_2b}
-    \caption{The pneumatic spring simulated with the implicit Euler method. The code for generating this plot is shown in Listing \ref{code2b}.}
+    \caption{The pneumatic spring simulated with the implicit Euler method. The code for generating this plot is shown in Listing \ref{code2}.}
 \end{figure}
 
 \subsection{c}
 
+With the implicit midpoint rule, the system is marginally stable. Both the position and the energy are oscillating around a point, neither decaying to zero, nor rising to infinity (see Figures \ref{fig:spring2c} and \ref{fig:spring2d}). 
+
 \begin{figure}[!ht]\label{fig:spring2c}
 	\centering
 	\includegraphics[width = 0.5\textwidth]{ModSim_ex4_2c}
-    \caption{The pneumatic spring simulated with the implicit midpoint rule. The code for generating this plot is shown in Listing \ref{code2c}.}
+    \caption{The pneumatic spring simulated with the implicit midpoint rule. The code for generating this plot is shown in Listing \ref{code2}.}
 \end{figure}
 
 \subsection{d}
@@ -127,7 +131,7 @@ As seen in Figure \ref{fig:spring2a}, the explicit Euler method is on the verge 
 \begin{figure}[!ht]\label{fig:spring2d}
 	\centering
 	\includegraphics[width = 0.5\textwidth]{ModSim_ex4_2d}
-    \caption{The energy in the system for the three solvers. The code for generating this plot is shown in Listing \ref{code2d}.}
+    \caption{The energy in the system for the three solvers. The code for generating this plot is shown in Listing \ref{code2}.}
 \end{figure}
 
 \section{Problem 3}
@@ -149,11 +153,9 @@ $T_L = u_a = 0$. Energy function for the system:
 \end{equation*}
 
 To prove stability, the energy in the system must be decreasing for all times. 
-
 \begin{align*}
 	\dot E &= L_ai_a\frac{di_a}{dt} + J_m\omega_m\frac{d\omega_m}{dt}\\
 	&= -R_ai_a^2 - K\omega_mi_a + i_au_a+K\omega_mi_a - \omega_mT_L
-	
 \end{align*}
 
 \begin{equation*}
@@ -167,7 +169,6 @@ To prove passivity, the storage function, $V$, must fulfill the criteria $\dot V
 	V &= E\\
 	\dot V &= -R_ai_a^2 - K\omega_mi_a + i_au_a+K\omega_mi_a - \omega_mT_L\\
 	&= -R_ai_a^2 + i_au_a - \omega_mT_L
-	
 \end{align*}
 
 \begin{equation*}
@@ -176,119 +177,81 @@ To prove passivity, the storage function, $V$, must fulfill the criteria $\dot V
 
 \section{c}
 
-SInce the system is passive, we can use two PID controllers to control the system to a given input. 
-\section{Listings}
+Since the system is passive, we can use two PID controllers to control the system to a given input. 
 
 
-\begin{lstlisting}[language=Matlab, frame = single, caption = The explicit Euler method implemented i MATLAB,, label=code2a]
-hold on; grid on;
-
+\begin{lstlisting}[language=Matlab, frame = single, caption = All the methods implemented in MATLAB,, label=code2]
 kappa = 1.4;
 g = 9.81;
 
 h = 0.01;
 t = 0:h:10;
+y0 = [2;0];
 
 ya = zeros (2,length(t));
-ya(1,1) = 2;
-ya(2,1) = 0;
+yb = zeros (2,length(t));
+yc = zeros (2,length(t));
+ya(:,1) = y0;
+yb(:,1) = y0;
+yc(:,1) = y0;
 
-f = @(ya) [ya(2);g*(ya(1)^(-kappa) - 1)];
+f = @(y) [y(2);g*(y(1)^(-kappa) - 1)];
+opt = optimset('Display','off','TolFun',1e-8);
+
 
 for i = 1:(length(t) - 1)
+    ya(:,i+1) = ya(:,i) + h*feval(f,ya(:,i));
     
-    k_1 = f(ya(:,i));
-    k_2 = f(ya(:,i) + 0.5*h.*k_1);
+    rb = @(ybnext) (yb(:,i) + ...
+    h*feval(f, ybnext) - ybnext);
+    yb(:,i+1) = fsolve(rb, yb(:,i), opt);
     
-    ya(:,i+1) = ya(:,i) + h.*k_2;
-    
+    rc = @(ycnext) (yc(:,i) + ...
+    h*feval(f, (ycnext+yc(:,i))/2) - ycnext);
+    yc(:,i+1) = fsolve(rc, yc(:,i), opt);
 end
+
+
+figure;
+hold on; grid on;
 
 plot(t,ya(1,:));
 xlabel('t(s)');
 ylabel('x(m)');
 
 print -depsc modsim_ex4_2a.eps
-\end{lstlisting}
 
-\begin{lstlisting}[language=Matlab, frame = single, caption = The implicit Euler method implemented i MATLAB,, label=code2b]
-
+figure;
 hold on; grid on;
-
-kappa = 1.4;
-g = 9.81;
-
-h = 0.01;
-t = 0:h:10;
-
-yb = zeros (2,length(t));
-yb(1,1) = 2;
-yb(2,1) = 0;
-
-f = @(yb) [yb(2);g*(yb(1)^(-kappa) - 1)];
-
-opt = optimset('Display','off','TolFun',1e-8);
-
-for i = 1:(length(t) - 1)
-    
-    r = @(ybnext) (yb(:,i) + h*feval(f, ybnext) - ybnext);
-    yb(:,i+1) = fsolve(r, yb(:,i), opt);
-    
-end
 
 plot(t,yb(1,:));
 xlabel('t(s)');
 ylabel('x(m)');
 
 print -depsc modsim_ex4_2b.eps
-\end{lstlisting}
 
-\begin{lstlisting}[language=Matlab, frame = single, caption = The implicit midpoint rule implemented i MATLAB,, label=code2c]
-
+figure;
 hold on; grid on;
-
-kappa = 1.4;
-g = 9.81;
-
-h = 0.01;
-t = 0:h:10;
-
-yc = zeros (2,length(t));
-yc(1,1) = 2;
-yc(2,1) = 0;
-
-f = @(yc) [yc(2);g*(yc(1)^(-kappa) - 1)];
-
-opt = optimset('Display','off','TolFun',1e-8);
-
-for i = 1:(length(t) - 1)
-    
-    r = @(ycnext) (yc(:,i) + h/2*feval(f, ycnext) - ycnext);
-    yc(:,i+1) = fsolve(r, yc(:,i), opt);
-    
-end
 
 plot(t,yc(1,:));
 xlabel('t(s)');
 ylabel('x(m)');
 
 print -depsc modsim_ex4_2c.eps
-\end{lstlisting}
 
-\begin{lstlisting}[language=Matlab, frame = single, caption = The implicit midpoint rule implemented i MATLAB,, label=code2d]
-
+figure;
 hold on; grid on;
-
-h = 0.01;
-t = 0:h:10;
 
 p0 = 2.5*10^5;
 m = 200;
 A = 0.01;
 
-Ea = (1/(kappa-1))*p0*A.*ya(1,:).^(1-kappa) + m*g.*ya(1,:) + 0.5*m.*ya(2,:).^2;
-Eb = (1/(kappa-1))*p0*A.*yb(1,:).^(1-kappa) + m*g.*yb(1,:) + 0.5*m.*yb(2,:).^2;
-Ec = (1/(kappa-1))*p0*A.*yc(1,:).^(1-kappa) + m*g.*yc(1,:) + 0.5*m.*yc(2,:).^2;
+Ea = (1/(kappa-1))*p0*A.*ya(1,:).^(1-kappa) + ...
+m*g.*ya(1,:) + 0.5*m.*ya(2,:).^2;
+Eb = (1/(kappa-1))*p0*A.*yb(1,:).^(1-kappa) + ...
+m*g.*yb(1,:) + 0.5*m.*yb(2,:).^2;
+Ec = (1/(kappa-1))*p0*A.*yc(1,:).^(1-kappa) + ...
+m*g.*yc(1,:) + 0.5*m.*yc(2,:).^2;
 
 
 plot(t,Ea);
@@ -296,9 +259,14 @@ plot(t,Eb);
 plot(t,Ec);
 xlabel('t(s)');
 ylabel('E(J)');
-legend('Explicit Euler','Implicit Euler','Implicit midpoint');
+legend('Explicit Euler','Implicit Euler',...
+'Implicit midpoint');
 
 print -depsc modsim_ex4_2d.eps
+
+
 \end{lstlisting}
+
+
 
 \end{document}
