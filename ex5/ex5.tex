@@ -1,0 +1,149 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[norsk]{babel}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.eps,.pdf,.png,.jpg}
+\usepackage{latexsym}
+\usepackage{hyperref}
+\usepackage[euler]{textgreek}
+\usepackage{stackengine}
+\usepackage{listings}
+\usepackage[version-1-compatibility]{siunitx}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{pdfpages}
+\hypersetup{pdfborder={0 0 0}}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\pgfplotsset{plot coordinates/math parser=false}
+\newlength\figureheight
+\newlength\figurewidth
+\usepackage[section]{placeins}%Sørger for at plots og andre floats holder seg til sin section.
+\lstset{flexiblecolumns=true}
+
+
+\lstloadlanguages{Matlab}
+\setlength\parindent{0pt}%Setter indent til 0
+\definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0}
+
+
+\lstloadlanguages{Matlab}%
+\lstset{language=Matlab,                        % Use MATLAB
+        frame=single,                           % Single frame around code
+        basicstyle=\small\ttfamily,             % Use small true type font
+        keywordstyle=[1]\color{Blue}\bfseries,        % MATLAB functions bold and blue
+        keywordstyle=[2]\color{Purple},         % MATLAB function arguments purple
+        keywordstyle=[3]\color{Blue}\underbar,  % User functions underlined and blue
+        identifierstyle=,                       % Nothing special about identifiers
+                                                % Comments small dark green courier
+        commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small,
+        stringstyle=\color{Purple},             % Strings are purple
+        showstringspaces=false,                 % Don't put marks in string spaces
+        tabsize=5,                              % 5 spaces per tab
+        %
+        %%% Put standard MATLAB functions not included in the default
+        %%% language here
+        morekeywords={xlim,ylim,var,alpha,factorial,poissrnd,normpdf,normcdf},
+        %
+        %%% Put MATLAB function parameters here
+        morekeywords=[2]{on, off, interp},
+        %
+        %%% Put user defined functions here
+        morekeywords=[3]{FindESS, homework_example},
+        %
+        morecomment=[l][\color{Blue}]{...},     % Line continuation (...) like blue comment
+        numbers=left,                           % Line numbers on left
+        firstnumber=1,                          % Line numbers start with line 1
+        numberstyle=\tiny\color{Blue},          % Line numbers are blue
+        stepnumber=5                            % Line numbers go in steps of 5
+        }
+
+% Includes a MATLAB script.
+% The first parameter is the label, which also is the name of the script
+%   without the .m.
+% The second parameter is the optional caption.
+\newcommand{\matlabscript}[2]{\begin{itemize}\item[]\lstinputlisting[caption=#2,label=#1]{#1.m}\end{itemize}}
+
+
+\title{Exercise 3 - TTK4130 Modeling and Simulation}
+\author{Camilla Sterud}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\section{Problem 1}
+
+\subsection{a}
+
+For spool 1:
+
+\begin{equation*}
+\underline{\underline{\Sigma\tau = J_1\dot\omega_1 = F_1r_1 - T_1 + B_1\omega_1}}
+\end{equation*}
+
+For spool 2:
+
+\begin{equation*}
+\underline{\underline{\Sigma\tau = J_2\dot\omega_2 = -F_2r_2 + T_2 + B_2\omega_2}}
+\end{equation*}
+
+
+\subsection{c}
+
+Chose right as positive direction. 
+
+\begin{align*}
+	\Sigma F &= F_2 - F_1\\
+	\dot x &= v_2 - v_1
+\end{align*}
+
+\begin{equation*}
+	\underline{\underline{F_2 - F_1 = Kx^2 + B\dot x}}
+\end{equation*}
+
+\subsection{d}
+
+Know that 
+
+\begin{align*}
+	F_1v_1 - F_2v_2 &= F_kv_k \\
+	F_k &= kx_k, \quad \dot x = v_k,
+\end{align*}
+
+and from the figure in the exercise we see that
+
+\begin{align*}
+	F_k &= F_1\cos(\theta) + F_2\cos(\theta)\\
+	F_1\sin(\theta) &= F_2\sin(\theta).
+\end{align*}	
+
+From this it is easy to derive that 
+
+\begin{align*}
+	v_1 - v_2 &= 2v_k\cos(\theta)\\
+	F_1 &= F_2 = \frac{F_k}{2\cos(\theta)}
+\end{align*}
+
+\subsection{g}
+
+\begin{figure}[!ht]\label{fig:bode}
+	\centering
+	\includegraphics[width = 0.8\textwidth]{modsim_ex5_bode}
+    \caption{The bode plot for the system. The code for generating this plot can be seen in Listing \ref{modsim_ex5}.}
+\end{figure}
+
+
+\matlabscript{modsim_ex5}{Code for making the Bode plot in MATLAB}
+
+
+
+\end{document}
