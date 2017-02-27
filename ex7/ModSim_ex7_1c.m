@@ -1,23 +1,33 @@
 N = 5;
 
-L = 19.76;
-beta = 1.7052*10^9;
-rho = 870;
-r = 6.17*10^(-3);
-nu = 8*10^(-5);
-area = pi*r^2;
-c = sqrt(beta/rho);
-Z_0 = rho*c/area;
+ModSim_ex7_1c_init;
 
-A = zeros(N,N);
-B = zeros(N,2);
-C = zeros(2,N);
-D = zeros(2,2);
+sim('ModSim_ex7_1c_model')
 
-C(1,1) = 1;
-C(2,N) = 1;
+figure(1)
+hold on; grid on;
+subplot(3,1,1);
+plot(p_1.Time, p_1.Data, p_N.Time, p_N.Data);
+title('N = 5')
 
 
-B(1,1) = c^2*rho/(area*L);
-B(N,2) = -c^2*rho/(area*L);
+N = 10;
 
+ModSim_ex7_1c_init;
+
+sim('ModSim_ex7_1c_model')
+
+subplot(3,1,2);
+plot(p_1.Time, p_1.Data, p_N.Time, p_N.Data);
+title('N = 10')
+
+N = 50;
+
+ModSim_ex7_1c_init;
+
+sim('ModSim_ex7_1c_model')
+
+subplot(3,1,3);
+plot(p_1.Time, p_1.Data, p_N.Time, p_N.Data);
+title('N = 50')
+legend('p_1','p_N')
